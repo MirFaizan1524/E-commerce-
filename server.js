@@ -1,12 +1,12 @@
 const app  = require('./app.js');
 require('dotenv').config();
 const connectDB = require("./config/db.js");    
-
-  connectDB().then(()=>{
+  
+   connectDB().then(()=>{
     console.log("DB connected");       
-  }).catch((err)=>{
+   }).catch((err)=>{
     console.log("Error occured while connecting to database");
-  })  
+   })  
 
 
 
