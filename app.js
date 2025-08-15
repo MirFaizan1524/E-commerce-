@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+const cusomterRoutes = require("../backend/routes/api/v1/Customer.routes.js");
 
 
 
@@ -12,12 +12,14 @@ const app = express();
 
 
 // possible routes:
-
+// Mock route:
 app.get('/',(req,res)=>{
 
 res.send("Hi welcome to the ecommerce web app");
 
 })
+// Customer Routes:
+app.use("/api/v1",cusomterRoutes);   
 
 
 module.exports = app;
