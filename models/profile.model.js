@@ -8,8 +8,9 @@ const ProfileSchema = new mongoose.Schema({
     type:String
   },
   user_id:{
-    type:mongoose.Schema.ObjectId,
-    ref:"User"
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User",
+    required:true
   },
   avatar:{
     type:String,
@@ -22,5 +23,5 @@ const ProfileSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-const Profile = mongoose.Model("Profile","ProfileSchema");
+const Profile = mongoose.model("Profile",ProfileSchema);
 module.exports = Profile;
