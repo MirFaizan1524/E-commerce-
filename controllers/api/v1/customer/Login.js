@@ -1,4 +1,4 @@
-const User = require("../../../../models/users.model.js");
+const User = require("../../../../models/user.model.js");
 const jwt = require('jsonwebtoken');
 const loginUser = async(req,res)=>{
   try{
@@ -14,7 +14,7 @@ const loginUser = async(req,res)=>{
       // checking the existence of user:
       const user = await User.findOne({email:email});
        if(!user){
-         return res.status(401).json({
+         return res.status(404).json({
             success:false,
             Message:"User do not Exists Kindly Signup!"
          })
@@ -48,7 +48,7 @@ const loginUser = async(req,res)=>{
       
    }catch(error){
        console.log("Error occured in customer login",error);  
-       return res.status(401).json({
+       return res.status(404).json({
          success:false,
          Message:"Error Occured while login"
        }) 
