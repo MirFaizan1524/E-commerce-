@@ -20,7 +20,8 @@ res.send("Hi welcome to the ecommerce web app");
 
 })
 // Customer Routes:
-app.use("/api/v1/user",cusomterRoutes);  
+app.use("/api/v1/user",cusomterRoutes);
+// Admin route:  
 app.use("/api/v1/admin",adminRoutes); 
 
 
