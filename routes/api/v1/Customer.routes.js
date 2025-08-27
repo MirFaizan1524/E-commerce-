@@ -6,13 +6,13 @@ const { createProfile, updateProfile, fetchProfile } = require("../../../control
 
 
 // login || signup routes:
-router.post("/user/login",loginUser);
+router.post("/login",loginUser);
 router.post('/user/signup',signUpUser);
 
 // profile routes:
-router.post("/user/add-profile/:u_id",createProfile);
-router.put("/user/update-profile/:u_id",updateProfile);
-router.get('/user/profile/:u_id',fetchProfile);
+router.post("/add-profile/:u_id",createProfile);
+router.put("/update-profile/:u_id",updateProfile);
+router.get('/profile/:u_id',fetchProfile);
 
 
 
