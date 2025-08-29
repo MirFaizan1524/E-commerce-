@@ -13,6 +13,10 @@ const CategorySchema = new mongoose.Schema({
    addedBy:{
       type:mongoose.Schema.Types.ObjectId,
       ref:"User"
+   },
+   updatedBy:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User"
    }
 
 
