@@ -52,11 +52,14 @@ const addCategory = async(req,res)=>{
 const updateCategory   = async(req,res)=>{
   try{
    
-      const userDetails = req.user;
-      console.log("Admin user",userDetails); 
-      console.log("Update category was hit");4
+        const userDetails = req.user;
+         if(userDetails.user.role!="admin"){
+            return res.status(401).json({
+                success:false,
+                message:"Un-authorised access please login as admin"
+            })
+         }
       const category_id = req.query.ID;
-      console.log("Query id",category_id);
       let {categoryName,categoryType} = req.body;
       if(!category_id || !mongoose.Types.ObjectId.isValid(category_id)){
           return res.status(402).json({
@@ -111,7 +114,14 @@ const updateCategory   = async(req,res)=>{
 const fetchCategory = async(req,res)=>{
   try{
      console.log("get category was hit");
-     const userDetails = req.user;
+       const userDetails = req.user;
+         if(userDetails.user.role!="admin"){
+            return res.status(401).json({
+                success:false,
+                message:"Un-authorised access please login as admin"
+            })
+         }
+         
      const category_id = req.query.ID;
      if(!category_id || !mongoose.Types.ObjectId.isValid(category_id)){
          return res.status(403).json({
@@ -147,5 +157,38 @@ const fetchCategory = async(req,res)=>{
 
 }
 
+const fetchAllcategories  = async(req,res)=>{
+    try{
+         console.log("Fetch all categories route was hit");
+         const userDetails = req.user;
+         if(userDetails.user.role!="admin"){
+            return res.status(401).json({
+                success:false,
+                message:"Un-authorised access please login as admin"
+            })
+         }
+         const allCategories = await Category.find().select({categoryName:1,categoryType:1}).sort({createdAt:-1});
+         if(!allCategories){
+           return res.status(404).json({
+                success:false,
+                message:"Catgeories not found!"
+            })
+         }  
+         return res.status(200).json({
+            success:true,
+            message:"Categories found successfully!",
+            Categories:allCategories
+         })
+    }
+    catch(error){
 
-module.exports = {addCategory,updateCategory,fetchCategory};
+        console.log("Error occured while fetching all categories",error); 
+        return res.status(500).json({
+                success:false,
+                message:"Error occured while fetching all categories"
+            })
+    }
+}
+
+
+module.exports = {addCategory,updateCategory,fetchCategory,fetchAllcategories};
