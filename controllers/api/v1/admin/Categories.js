@@ -108,5 +108,44 @@ const updateCategory   = async(req,res)=>{
 
 }
 
+const fetchCategory = async(req,res)=>{
+  try{
+     console.log("get category was hit");
+     const userDetails = req.user;
+     const category_id = req.query.ID;
+     if(!category_id || !mongoose.Types.ObjectId.isValid(category_id)){
+         return res.status(403).json({
+            success:false,
+            message:"Please enter valid category Id"
+         })
 
-module.exports = {addCategory,updateCategory};
+     }
+     const result = await Category.findOne({_id:category_id}).select({categoryName:1,categoryType:1});
+    if(!result){
+          return res.status(404).json({
+            success:false,
+            message:"Catgeory was not found!"
+         })
+    }
+   
+     return res.status(200).json({
+            success:true,
+            message:"Catgeory found successfully",
+            Data:result
+         })
+
+      
+
+  }catch(error){
+    console.log("Error occured while fetching single category",error);
+       return res.status(500).json({
+            success:false,
+            message:"Error occured while fetching single category"
+         })
+  }
+
+
+}
+
+
+module.exports = {addCategory,updateCategory,fetchCategory};
