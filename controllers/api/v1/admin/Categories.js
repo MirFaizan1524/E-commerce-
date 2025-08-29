@@ -189,6 +189,43 @@ const fetchAllcategories  = async(req,res)=>{
             })
     }
 }
+const deleteCategory = async(req,res)=>{
+    try{
+     console.log("Delete category route was hit");
+     const userDetails = req.user;
+     const category_id = req.query.ID;
+     if(userDetails.user.role!="admin"){
+        return res.status(401).json({
+            success:false,
+            message:"Un-Authorized Access kindly login as Admin"
+        })
+     }
+     if(!category_id || !mongoose.Types.ObjectId.isValid(category_id)){
+        return res.status(403).json({
+            success:false,
+            message:"Please Enter valid Category Id"
+        })
+     }
+     let deletedCatgeroy = await Category.findByIdAndDelete({_id:category_id});
+     if(!deleteCategory){
+        return res.status(404).json({
+            success:false,
+            message:"Category was not deleted!"
+        })    
+     }
+     return res.status(201).json({
+            success:true,
+            message:"Category was  deleted successfully!"
+        }) 
 
+    }catch(error){
+        console.log("Error occured while deleting category",error);
+      return res.status(500).json({
+            success:false,
+            message:"Error occured while deleting category!"
+        }) 
 
-module.exports = {addCategory,updateCategory,fetchCategory,fetchAllcategories};
+    }
+}
+
+module.exports = {addCategory,updateCategory,fetchCategory,fetchAllcategories,deleteCategory};
