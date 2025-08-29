@@ -8,6 +8,7 @@ const addCategory = async(req,res)=>{
   try{
         // console.log("Add category was hit");
         const userDetails = req.user;
+        console.log("User Details",userDetails);
         const {categoryName,categoryType} = req.body;
         if(userDetails.user.role!="admin"){
           return res.status(401).json({
@@ -24,7 +25,8 @@ const addCategory = async(req,res)=>{
       // Add category into Db:
       let categoryAdded = await new Category({
         categoryName:categoryName,
-        categoryType:categoryType
+        categoryType:categoryType,
+        addedBy:userDetails.user._id
       }).save();
        if(categoryAdded){
            return res.status(201).json({
