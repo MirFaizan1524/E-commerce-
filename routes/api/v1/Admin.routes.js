@@ -1,6 +1,6 @@
 const express  = require("express");
 const router = express.Router(); 
-const authenticateJWT = require("../../../helpers/customerauthentication.js"); 
+const authenticateJWT = require("../../../helpers/adminauthentication.js"); 
 const { addCategory } = require("../../../controllers/api/v1/admin/Categories.js");
 
 
