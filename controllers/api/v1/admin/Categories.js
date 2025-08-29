@@ -1,5 +1,5 @@
 const Category = require("../../../../models/category.model.js");
-
+const mongoose = require("mongoose");
 
 
 
@@ -47,6 +47,66 @@ const addCategory = async(req,res)=>{
 
 
 
-}  
+}
 
-module.exports = {addCategory};
+const updateCategory   = async(req,res)=>{
+  try{
+   
+      const userDetails = req.user;
+      console.log("Admin user",userDetails); 
+      console.log("Update category was hit");4
+      const category_id = req.query.ID;
+      console.log("Query id",category_id);
+      let {categoryName,categoryType} = req.body;
+      if(!category_id || !mongoose.Types.ObjectId.isValid(category_id)){
+          return res.status(402).json({
+            success:false,
+            message:"Please send valid category id"
+        })
+      }   
+     
+      if(!categoryName || !categoryType){
+        return res.status(404).json({
+            success:false,
+            message:"All fields are required"
+        })
+      }
+      // Check whether category exists or not:
+     let existingCategory = await Category.findOne({_id:category_id});
+     if(!existingCategory){
+         
+         return res.status(404).json({
+            success:false,
+            message:"Category not found"
+        })
+
+     }
+     const updatedCategory = await Category.updateOne({_id:category_id},
+        {
+          categoryName:categoryName,
+          categoryType:categoryType, 
+          updatedBy: userDetails.user._id
+        }
+     );
+     
+     if(updatedCategory){
+        return res.status(201).json({
+            success:true,
+            message:"Category Updated Successfully",
+           
+        })
+     }
+  } 
+  catch(error){
+    console.log("Error occured in update category",error);
+    return res.status(500).json({
+        success:false,
+        message:"error occured while updating category"
+    })
+  }
+
+
+}
+
+
+module.exports = {addCategory,updateCategory};
