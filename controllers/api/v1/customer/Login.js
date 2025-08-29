@@ -87,7 +87,7 @@ const signUpUser = async(req,res)=>{
         address:address,
         role:role
       }).save();
-    console.log("created user",user);      
+   //  console.log("created user",user);      
       if(!user){
          return res.status(401).json({
          success:false,
