@@ -33,10 +33,14 @@ const ProductSchema = new mongoose.Schema({
 
     }
   ],
-  productVariations:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"ProductVariation"
-  }
+  Productvariants: [
+    {
+      color: { type: String },
+      size: { type: String },
+      stock: { type: Number, default: 0 } // availability per variant
+    }
+  ],
+  
     
 
 },{timestamps:true});
