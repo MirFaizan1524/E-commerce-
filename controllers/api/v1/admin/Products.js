@@ -159,5 +159,122 @@ const updateProduct = async(req,res)=>{
    }
 
 }
+const getSingleProduct = async(req,res)=>{
+    try{
+      console.log("get single product route was hit successfully");
+       const userDetails = req.user;
+       const product_id = req.query.P_ID;
+       if(userDetails.user.role!='admin'){
+          return res.status(401).json({
+            success:false,
+            message:"Un-authorized access please login as admin"
+          })
+       } 
+       
+       if(!mongoose.Types.ObjectId.isValid(product_id)){
+          return res.status(404).json({
+            success:false,
+            message:"Please enter valid product Id"
+          })
 
-module.exports = {addProduct,updateProduct};
+       }
+       let singleProduct = await Product.findOne({_id:product_id}).select({_id:0,addedBy:0,updatedby:0});
+       if(!singleProduct){
+          return res.status(404).json({
+            success:false,
+            message:"Product was not found"
+          })
+
+       }
+        return res.status(200).json({
+            success:true,
+            message:"Product found successfully",
+            product:singleProduct
+          })
+
+    }catch(error){
+
+        console.log("Error occured while Fetching Single product",error);
+          return res.status(500).json({
+            success:false,
+            message:"Error occured while Fetching Single product"
+          })
+
+    }
+}
+const fetchAllproducts = async(req,res)=>{
+   try{
+      console.log("Fetch all products was hit");
+        const userDetails = req.user;
+        if(userDetails.user.role!="admin"){
+          return res.status(401).json({
+            success:false,
+            message:"Un-authorized access please login as admin"
+          })
+        }
+      let allProducts = await Product.find().select({addedBy:0,updatedBy:0});
+       if(!allProducts){
+          return res.status(404).json({
+            success:false,
+            message:"Products were not found!"
+          })
+
+       }
+        return res.status(200).json({
+            success:true,
+            message:"All Products were  found!",
+            Products:allProducts
+          })                     
+   }
+   catch(error){
+     console.log("Error occured while fetching all products",error);
+     return res.status(500).json({
+            success:false,
+            message:"Error occured while fetching all products!"
+          })
+   }
+
+
+}
+const deleteProduct = async(req,res)=>{
+    try{
+       const userDetails = req.user;
+       if(userDetails.user.role!="admin"){
+        return res.status(401).json({
+            success:false,
+            message:"Un-authorized access please login as admin"
+        })
+       }
+        const product_id = req.query.P_ID;
+        if(!mongoose.Types.ObjectId.isValid(product_id)){
+            return res.status(403).json({
+                success:false,
+                message:"Please enter valid Product Id"
+            })
+        }
+      let deletedProduct = await Product.deleteOne({_id:product_id});
+      if(!deleteProduct){
+         return res.status(404).json({
+                success:false,
+                message:"product was not deleted"
+            })
+      }  
+      
+         return res.status(201).json({
+                success:true,
+                message:"Product was deleted successfully"
+            })
+
+
+    }catch(error){
+           console.log("Error occured while deleting product",error);   
+            return res.status(500).json({
+                success:false,
+                message:"Error Occured while deleting product"
+            }) 
+
+
+    }
+}
+
+module.exports = {addProduct,updateProduct,getSingleProduct,fetchAllproducts,deleteProduct};
