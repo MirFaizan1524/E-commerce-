@@ -2,7 +2,7 @@ const express  = require("express");
 const router = express.Router(); 
 const authenticateJWT = require("../../../helpers/adminauthentication.js"); 
 const { addCategory,updateCategory,fetchCategory,fetchAllcategories,deleteCategory} = require("../../../controllers/api/v1/admin/Categories.js");
-const { addProduct } = require("../../../controllers/api/v1/admin/Products.js");
+const { addProduct, updateProduct } = require("../../../controllers/api/v1/admin/Products.js");
 
 
 // category routes:
@@ -15,5 +15,6 @@ router.delete('/delete-category',authenticateJWT,deleteCategory);
 
 // Product routes:
 router.post('/add-product',authenticateJWT,addProduct);
+router.put('/update-product',authenticateJWT,updateProduct);
 
 module.exports = router;
