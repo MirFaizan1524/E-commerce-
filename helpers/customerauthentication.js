@@ -4,8 +4,14 @@ const User =  require("../models/user.model.js");
 
 const authenticateJWT = async(req,res,next)=>{
    let authToken = req.headers.authorization;
+    if(!authToken){
+       return res.status(401).json({
+        success:false,
+        message:"Invalid token please enter valid token"
+       })               
+    }
    let confirmToken = authToken.startsWith('Bearer');
-   if(!authToken || !confirmToken){
+   if(!confirmToken){
      return res.status(401).json({
       success:false,
       Message:"Un-authorized Access Please login first"
