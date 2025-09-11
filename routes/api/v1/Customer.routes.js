@@ -5,6 +5,7 @@ const {signUpUser, loginUser} = require("../../../controllers/api/v1/customer/Lo
 const { createProfile, updateProfile, fetchProfile } = require("../../../controllers/api/v1/customer/customer.js");
 const authenticateJWT = require("../../../helpers/customerauthentication.js");
 const { addToCart, deleteProductFromCart } = require("../../../controllers/api/v1/customer/Cart.js");
+const { createOrder } = require("../../../controllers/api/v1/customer/Orders.js");
 
 // login || signup routes:
 router.post("/login",loginUser);
@@ -18,6 +19,11 @@ router.get('/profile/:u_id',fetchProfile);
 // cart routes:
 router.post("/add-cart",authenticateJWT,addToCart);
 router.delete("/remove-cart",authenticateJWT,deleteProductFromCart);
+
+
+// Order Routes:
+
+router.post('/create-order',authenticateJWT,createOrder);
 
 
 
